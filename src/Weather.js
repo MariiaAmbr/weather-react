@@ -14,5 +14,5 @@ export default function Weather(props) {
 
   axios.get(apiUrl).then(handleResponse);
 
-  return <Audio heigth="100" width="100" color="grey" ariaLabel="loading" />;
+  return <Audio heigth="100" width="100" color="blue" ariaLabel="loading" />;
 }
