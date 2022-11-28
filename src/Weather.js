@@ -1,18 +1,35 @@
-import React from "react";
 import axios from "axios";
-import { Audio } from "react-loader-spinner";
+import React, { useState } from "react";
+import "./App.css";
 
 export default function Weather(props) {
-  function handleResponse(response) {
-    alert(
-      `The weather in ${response.data.name} is ${response.data.main.temp}°C`
-    );
+  let [temp, setTemp] = useState(null);
+  let [humidity, setHumidity] = useState(null);
+  let [wind, setWind] = useState(null);
+  let [desciption, setDesciption] = useState(null);
+
+  function showTemp(response) {
+    setTemp(response.data.main.temp);
+    setHumidity(response.data.main.humidity);
+    setWind(response.data.wind.speed);
+    setDesciption(response.data.weather[0].description);
   }
-  let apiKey = "3ef05a16171b60ea065a0ce29b7252a6";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=
-   ${props.city}&appid=${apiKey}&units=metric`;
 
-  axios.get(apiUrl).then(handleResponse);
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${props.cityWeather}&appid=3ef05a16171b60ea065a0ce29b7252a6&units=metric`;
+  axios.get(url).then(showTemp);
 
-  return <Audio heigth="100" width="100" color="white" ariaLabel="loading" />;
+  if (temp) {
+    return (
+      <div>
+        <ul className="weaherList">
+          <li>Temperature: {Math.round(temp)}°C</li>
+          <li>Description: {desciption}</li>
+          <li>Humidity: {Math.round(humidity)}</li>
+          <li>Wind: {Math.round(wind)}</li>
+        </ul>
+      </div>
+    );
+  } else {
+    return <h1> Loading...</h1>;
+  }
 }
